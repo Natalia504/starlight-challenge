@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import { getAllProduct } from './components/reducer';
+import { getAllProduct, toggleView } from './components/reducer';
 
 class App extends Component {
-
-
-  componentDidMount() {
-    this.props.getAllProduct();
+  
+  showAll() {
+    
+    !this.props.allProduct ? null : this.props.getAllProduct()
+    this.props.toggleView(this.props.hidden);
   }
 
-
   render() {
+   
     let data = this.props.allProduct.map((el, i) => {
       return (
         <div key={el.id}>
@@ -25,7 +26,8 @@ class App extends Component {
     })
     return (
       <div className="App">
-        ALL PRODUCTS: {data}
+      <button onClick={() => this.showAll()}>{this.props.hidden ? 'All Items': 'Hide'}</button>
+        { !this.props.hidden ? data : null}
       </div>
     );
   }
@@ -33,8 +35,9 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    allProduct: state.allProduct
+    allProduct: state.allProduct,
+    hidden: state.hidden
   }
 }
 
-export default connect(mapStateToProps, { getAllProduct })(App);
+export default connect(mapStateToProps, { getAllProduct, toggleView })(App);
