@@ -10,7 +10,11 @@ import reducer from './components/reducer';
 
 
 ReactDOM.render(
-    <Provider store={createStore(reducer, applyMiddleware(promiseMiddleware))}>
+    <Provider store={createStore(
+        reducer,
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), 
+        applyMiddleware(promiseMiddleware())
+    )}>
         <App />
     </Provider>, document.getElementById('root'));
 registerServiceWorker();

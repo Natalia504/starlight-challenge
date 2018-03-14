@@ -6,18 +6,34 @@ import { getAllProduct } from './components/reducer';
 class App extends Component {
 
 
+  componentDidMount() {
+    this.props.getAllProduct();
+  }
+
+
   render() {
+    let data = this.props.allProduct.map((el, i) => {
+      return (
+        <div key={el.id}>
+          <div>Name: {el.name}</div>
+          <div>Size: {el.size}</div>
+          <div>Serial: {el.serial}</div>
+          <div>Date Created: {el.createdDate}</div>
+          <div>Modified On: {el.modifiedDate}</div>
+        </div>
+      )
+    })
     return (
       <div className="App">
-      ALL PRODUCTS: {this.props.allProduct}
+        ALL PRODUCTS: {data}
       </div>
     );
   }
 }
 
-const mapStateToProps= state => {
+const mapStateToProps = state => {
   return {
-    allProduct: state.allProducts
+    allProduct: state.allProduct
   }
 }
 
