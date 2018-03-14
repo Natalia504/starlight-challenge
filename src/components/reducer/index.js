@@ -8,9 +8,10 @@ const initialState={
 const GET_ALL_PRODUCT = 'GET_ALL_PRODUCT'
 
 export function getAllProduct(){
+    console.log('HI')
     return {
         type: GET_ALL_PRODUCT,
-        payload: axios.get('https://s3.us-east-2.amazonaws.com/cansdata/cans.json')
+        payload: axios.get('/api/allProduct')
     }
 }
 
@@ -20,6 +21,8 @@ export default function reducer( state = initialState, action){
 
     switch( action.type ) {
         case GET_ALL_PRODUCT + '_FULFILLED' :
+        console.log(action.payload)
+
         return Object.assign({}, state, {allProduct: action.payload.data})
         
         default: 

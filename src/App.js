@@ -16,8 +16,8 @@ class App extends Component {
       return (
         <div key={el.id}>
           <div>Name: {el.name}</div>
-          <div>Size: {el.size}</div>
           <div>Serial: {el.serial}</div>
+          <div>Size: {el.size}</div>
           <div>Date Created: {el.createdDate}</div>
           <div>Modified On: {el.modifiedDate}</div>
         </div>
