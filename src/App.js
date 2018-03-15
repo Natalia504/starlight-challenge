@@ -7,7 +7,8 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      foundArr: []
+      foundArr: [],
+      toggleFound: true
     }
   }
 
@@ -19,11 +20,12 @@ class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.found.data !== this.props.found.data) {
       this.setState({
-        foundArr: nextProps.found.data
+        foundArr: nextProps.found.data, 
+        toggleFound: !this.state.toggleFound
       })
     }
   }
-  
+
   renderFound(input) {
     this.props.searchItem(input);
   }
@@ -31,20 +33,20 @@ class App extends Component {
   render() {
 
     let foundData = this.state.foundArr.length ? this.state.foundArr.map(e => {
-      return <div key={e.id}>
+      return <div key={e.id} className='found-box'>
         <div>Name: {e.name}</div>
-          <div>ID: {e.id}</div>
-          <div>Serial: {e.serial}</div>
-          <div>Size: {e.size}</div>
-          <div>Date Created: {e.createdDate}</div>
-          <div>Modified On: {e.modifiedDate}</div>
+        <div>ID: {e.id}</div>
+        <div>Serial: {e.serial}</div>
+        <div>Size: {e.size}</div>
+        <div>Date Created: {e.createdDate}</div>
+        <div>Modified On: {e.modifiedDate}</div>
       </div>
     })
-      : 'not found'
+      : null
 
     let data = this.props.allProduct.map((e, i) => {
       return (
-        <div key={e.id} onClick={() => this.showCurrent(e.id)}>
+        <div key={e.id} className='data-box'>
           <div>Name: {e.name}</div>
           <div>ID: {e.id}</div>
           <div>Serial: {e.serial}</div>
@@ -58,15 +60,20 @@ class App extends Component {
     return (
       <div className="App" >
         <input placeholder='enter size' onChange={(e) => this.props.userInput(e.target.value)} />
-        <button onClick={() => this.renderFound(this.props.input)}>Find</button>
-        {foundData}
+        <button onClick={() => this.renderFound(this.props.input)}>{this.state.toggleFound ? 'Find' : 'Hide'}</button>
+        {!this.state.toggleFound
+        ? <div className='found'>{foundData}</div>
+        : null}
 
+        <hr />
 
-        {/* All DATA */}
         <button onClick={() => this.showAll()}>
           {this.props.hidden ? 'All Items' : 'Hide'}
         </button >
-        {!this.props.hidden ? data : null}
+        {!this.props.hidden
+          ?
+          <div className='data'>{data}</div>
+          : null}
       </div >
     );
   }

@@ -58,11 +58,9 @@ export default function reducer(state = initialState, action) {
             return Object.assign({}, state, { hidden: action.payload })
 
         case SEARCH_ITEM + '_FULFILLED':
-        console.log('searchiItem reducer fires')
             return Object.assign({}, state, { found: action.payload })
 
         case USER_INPUT:
-        // console.log('reducer gets here')
             return Object.assign({}, state, { input: action.payload })
 
         default:
