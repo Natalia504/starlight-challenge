@@ -75,15 +75,17 @@ class App extends Component {
     return (
       <div className="App" >
         <input placeholder='enter size' onChange={(e) => this.props.userInput(e.target.value)} />
-        <button onClick={() => this.renderFound(this.props.input)}>{this.state.toggleFound ? 'Find' : 'Hide'}</button>
+        <button onClick={() => this.renderFound(this.props.input)}>{this.state.toggleFound ? 'Find' : 'Hide Results'}</button>
         {!this.state.toggleFound
-          ? <div className='found'>{foundData}</div>
+          ? <div className='found'>
+          <div>{`Search results: ${this.state.foundArr.length}`}</div><div className='found'>{foundData}</div>
+          </div>
           : null}
 
         <hr />
 
-        <button onClick={() => this.showAll()}>
-          {this.props.hidden ? 'All Items' : 'Hide'}
+        <button type='button' onClick={() => this.showAll()}>
+          {this.props.hidden ? 'Show All Items' : 'Hide Items'}
         </button >
         {!this.props.hidden
           ?
