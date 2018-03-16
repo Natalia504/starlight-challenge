@@ -35,7 +35,7 @@ class App extends Component {
     this.props.searchItem(input);
   }
 
-  parseDate(date){
+  parseDate(date) {
     const newDate = new Date(date);
     const day = newDate.getDate();
     let month = newDate.getMonth();
@@ -78,7 +78,7 @@ class App extends Component {
         <button onClick={() => this.renderFound(this.props.input)}>{this.state.toggleFound ? 'Find' : 'Hide Results'}</button>
         {!this.state.toggleFound
           ? <div className='found'>
-          <div>{`Search results: ${this.state.foundArr.length}`}</div><div className='found'>{foundData}</div>
+            <div>{`Search results: ${this.state.foundArr.length}`}</div><div className='found'>{foundData}</div>
           </div>
           : null}
 
@@ -89,7 +89,10 @@ class App extends Component {
         </button >
         {!this.props.hidden
           ?
-          <div className='data'>{data}</div>
+          <div className='data'>
+            <div>{`Total items: ${this.props.allProducts.length}`}</div>
+            <div className='data'>{data}</div>
+          </div>
           : null}
       </div >
     );
