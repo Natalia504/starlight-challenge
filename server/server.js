@@ -7,7 +7,7 @@ const express = require("express"),
 app.use(bodyParser.json());
 
 
-app.get('/api/allProduct', (req, res) => {
+app.get('/api/allProducts', (req, res) => {
     res.send(data)
 });
 
