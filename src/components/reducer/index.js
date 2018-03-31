@@ -5,7 +5,8 @@ const initialState = {
     allProducts: [],
     hidden: true,
     found: [],
-    input: ''
+    input: '', 
+    item: []
 }
 
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
@@ -17,6 +18,8 @@ const ITEM_DETAILS = 'ITEM_DETAILS';
 // ACTIONS
 
 export function itemDetails(id){
+    console.log('action fires')
+
     return {
         type: ITEM_DETAILS,
         payload: axios.get(`/api/item/${id}`)
@@ -68,6 +71,10 @@ export default function reducer(state = initialState, action) {
 
         case USER_INPUT:
             return Object.assign({}, state, { input: action.payload })
+
+        case ITEM_DETAILS + '_FULFILLED':
+        console.log('reducer fires')
+            return Object.assign({}, state, {item: action.payload})
 
         default:
             return state;

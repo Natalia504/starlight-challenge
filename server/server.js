@@ -18,7 +18,12 @@ app.get('/api/found/:input', (req, res) => {
     res.send(foundData)
 })
 
-
+app.get('/api/item/:id', (req, res) => {
+    let itemId = data.filter(e => {
+        return e.id == req.params.id;
+    })
+    res.send(itemId)
+})
 
 
 app.listen(PORT, () => (console.log(`Listening on port ${PORT}`)));

@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { searchItem } from './reducer';
+import { itemDetails } from './reducer';
 
 class ItemDetails extends Component {
+
+    componentWillMount() {
+        console.log("hi")
+        this.props.itemDetails(this.props.match.params.id);
+    }
 
     parseDate(date) {
         const newDate = new Date(date);
@@ -16,18 +21,21 @@ class ItemDetails extends Component {
     }
 
     render() {
-        console.log('this.props.found', this.props.found)
-        const itemDetail = this.props.found.data.map((e, i) => <div key={e.id} className='found-box'>
-            <div className='row'>Hello: {e.name}</div>
-            <div className='row'>ID:{e.id}</div>
-            <div className='row'>Serial: {e.serial}</div>
-            <div className='row'>Size: {e.size}</div>
-            <div className='row'>Date Created: {this.parseDate(e.createdDate)}</div>
-            <div className='row'>Modified On: {this.parseDate(e.modifiedDate)}</div>
-        </div>)
+        console.log('this.props.item', this.props.item)
+    
+        const oneItem = this.props.item.data.map((e, i) => {
+            return <div key={e.id}>
+                <div className='row'>Hello: {e.name}</div>
+                <div className='row'>ID:{e.id}</div>
+                <div className='row'>Serial: {e.serial}</div>
+                <div className='row'>Size: {e.size}</div>
+                <div className='row'>Date Created: {this.parseDate(e.createdDate)}</div>
+                <div className='row'>Modified On: {this.parseDate(e.modifiedDate)}</div>
+            </div>
+        })
         return (
             <div>
-                {itemDetail}
+                {oneItem}
                 <Link to='/'><button>Back</button></Link>
             </div>
         )
@@ -36,11 +44,8 @@ class ItemDetails extends Component {
 
 const mapStateToProps = state => {
     return {
-        allProducts: state.allProducts,
-        hidden: state.hidden,
-        found: state.found,
-        input: state.input
+        item: state.item
     }
 }
 
-export default connect(mapStateToProps, { searchItem })(ItemDetails);
+export default connect(mapStateToProps, { itemDetails })(ItemDetails);
