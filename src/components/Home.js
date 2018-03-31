@@ -4,38 +4,23 @@ import { connect } from 'react-redux';
 import {
   getAllProducts,
   toggleView,
+  toggleFound,
   searchItem,
   userInput
 } from './reducer';
 import { Link } from 'react-router-dom';
-import ItemDetails from './ItemDetails';
 
 
 class Home extends Component {
-  constructor() {
-    super()
-    this.state = {
-      foundArr: [],
-      toggleFound: true
-    }
-  }
 
   showAll() {
-    (!this.props.allProducts ? null : this.props.getAllProducts());
+    this.props.allProducts.length ? null : this.props.getAllProducts();
     this.props.toggleView(this.props.hidden);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.found.data !== this.props.found.data) {
-      this.setState({
-        foundArr: nextProps.found.data,
-        toggleFound: !this.state.toggleFound
-      })
-    }
   }
 
   renderFound(input) {
     this.props.searchItem(input);
+    this.props.toggleFound(this.props.hideFound);
   }
 
   parseDate(date) {
@@ -49,11 +34,10 @@ class Home extends Component {
   }
 
   render() {
-    console.log(this.props.found, "Found HOME")
 
-    //display search results:
-    let foundData = this.state.foundArr.length
-      ? this.state.foundArr.map(e => {
+// DISPLAY SEARCH RESULTS
+    let foundData = this.props.found.length
+      ? this.props.found.map(e => {
         return <Link key={e.id} to={`/itemDetails/${e.id}`}>
           <div  className='found-box'>
             <div className='row'>Name: {e.name}</div>
@@ -67,7 +51,7 @@ class Home extends Component {
       })
       : null;
 
-    //display ALL items:
+//DISPLAY ALL ITEMS
     let data = this.props.allProducts.map((e) => {
       return (
         <Link key={e.id} to={`/itemDetails/${e.id}`}>
@@ -84,18 +68,17 @@ class Home extends Component {
     })
     return (
       <div className="App" >
-     "Home Page"
+{/* FOUND RESULTS */}
         <input placeholder='enter size' onChange={(e) => this.props.userInput(e.target.value)} />
-        <button onClick={() => this.renderFound(this.props.input)}>{this.state.toggleFound ? 'Find' : 'Hide Results'}</button>
-        {!this.state.toggleFound
+        <button onClick={() => this.renderFound(this.props.input)}>{this.props.hideFound ? 'Find' : 'Hide Results'}</button>
+        {!this.props.hideFound
           ? <div className='found'>
-            <div>{`Search results: ${this.state.foundArr.length}`}</div>
+            <div>{`Search results: ${this.props.found.length}`}</div>
             <div className='found'>{foundData}</div>
           </div>
           : null}
 
-        <hr />
-
+{/* ALL ITEMS */}
         <button type='button' onClick={() => this.showAll()}>
           {this.props.hidden ? 'Show All Items' : 'Hide Items'}
         </button >
@@ -116,8 +99,9 @@ const mapStateToProps = state => {
     allProducts: state.allProducts,
     hidden: state.hidden,
     found: state.found,
+    hideFound: state.hideFound,
     input: state.input
   }
 }
 
-export default connect(mapStateToProps, { getAllProducts, toggleView, searchItem, userInput })(Home);
+export default connect(mapStateToProps, { getAllProducts, toggleView, toggleFound, searchItem, userInput })(Home);

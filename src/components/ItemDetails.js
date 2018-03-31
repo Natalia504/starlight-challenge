@@ -5,8 +5,7 @@ import { itemDetails } from './reducer';
 
 class ItemDetails extends Component {
 
-    componentWillMount() {
-        console.log("hi")
+    componentDidMount() {
         this.props.itemDetails(this.props.match.params.id);
     }
 
@@ -20,10 +19,8 @@ class ItemDetails extends Component {
         return `${month} ${day}, ${year}`
     }
 
-    render() {
-        console.log('this.props.item', this.props.item)
-    
-        const oneItem = this.props.item.data.map((e, i) => {
+    render() {    
+        const oneItem = this.props.item.map((e, i) => {
             return <div key={e.id}>
                 <div className='row'>Hello: {e.name}</div>
                 <div className='row'>ID:{e.id}</div>
@@ -35,8 +32,9 @@ class ItemDetails extends Component {
         })
         return (
             <div>
+                 <Link to='/'><button>Back</button></Link>
                 {oneItem}
-                <Link to='/'><button>Back</button></Link>
+               
             </div>
         )
     }
