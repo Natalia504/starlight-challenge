@@ -7,8 +7,9 @@ import {
   toggleFound,
   searchItem,
   userInput
-} from './reducer';
+} from '../reducer';
 import { Link } from 'react-router-dom';
+import parseDate from './../utils';
 
 
 class Home extends Component {
@@ -23,16 +24,6 @@ class Home extends Component {
     this.props.toggleFound(this.props.hideFound);
   }
 
-  parseDate(date) {
-    const newDate = new Date(date);
-    const day = newDate.getDate();
-    let month = newDate.getMonth();
-    const arr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    month = arr[month]
-    const year = newDate.getFullYear();
-    return `${month} ${day}, ${year}`
-  }
-
   render() {
 
 // DISPLAY SEARCH RESULTS
@@ -44,8 +35,8 @@ class Home extends Component {
             <div className='row'>ID:{e.id}</div>
             <div className='row'>Serial: {e.serial}</div>
             <div className='row'>Size: {e.size}</div>
-            <div className='row'>Date Created: {this.parseDate(e.createdDate)}</div>
-            <div className='row'>Modified On: {this.parseDate(e.modifiedDate)}</div>
+            <div className='row'>Date Created: {parseDate(e.createdDate)}</div>
+            <div className='row'>Modified On: {parseDate(e.modifiedDate)}</div>
           </div>
         </Link>
       })
@@ -60,8 +51,8 @@ class Home extends Component {
             <div>ID: {e.id}</div>
             <div>Serial: {e.serial}</div>
             <div>Size: {e.size}</div>
-            <div>Date Created: {this.parseDate(e.createdDate)}</div>
-            <div>Modified On: {this.parseDate(e.modifiedDate)}</div>
+            <div>Date Created: {parseDate(e.createdDate)}</div>
+            <div>Modified On: {parseDate(e.modifiedDate)}</div>
           </div>
         </Link>
       )

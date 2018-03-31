@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
-import reducer from './components/reducer';
+import reducer from './reducer';
 import { BrowserRouter } from 'react-router-dom';
 
 

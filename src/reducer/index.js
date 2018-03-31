@@ -5,8 +5,10 @@ const initialState = {
     allProducts: [],
     hidden: true,
     found: [],
-    input: '', 
-    item: [], 
+    input: '',
+    item: [],
+    lat: null,
+    lng: null,
     hideFound: true
 }
 
@@ -19,8 +21,7 @@ const TOGGLE_FOUND = 'TOGGLE_FOUND';
 
 // ACTIONS
 
-export function itemDetails(id){
-    console.log('action fires')
+export function itemDetails(id) {
 
     return {
         type: ITEM_DETAILS,
@@ -50,7 +51,7 @@ export function toggleView(currentHidden) {
     }
 }
 
-export function toggleFound(foundHidden){
+export function toggleFound(foundHidden) {
     return {
         type: TOGGLE_FOUND,
         payload: !foundHidden
@@ -79,14 +80,16 @@ export default function reducer(state = initialState, action) {
             return Object.assign({}, state, { found: action.payload.data })
 
         case TOGGLE_FOUND:
-            return Object.assign({}, state, { hideFound: action.payload})
+            return Object.assign({}, state, { hideFound: action.payload })
 
         case USER_INPUT:
             return Object.assign({}, state, { input: action.payload })
-
+            
         case ITEM_DETAILS + '_FULFILLED':
-        console.log('reducer fires')
-            return Object.assign({}, state, {item: action.payload.data})
+            return Object.assign({}, state, { 
+                item: action.payload.data, 
+                lat: action.payload.data[0].location.location.lat, 
+                lng: action.payload.data[0].location.location.lon })
 
         default:
             return state;
