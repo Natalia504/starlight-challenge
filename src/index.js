@@ -7,14 +7,18 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import promiseMiddleware from 'redux-promise-middleware';
 import reducer from './components/reducer';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 
 ReactDOM.render(
     <Provider store={createStore(
         reducer,
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), 
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
         applyMiddleware(promiseMiddleware())
     )}>
-        <App />
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
+
     </Provider>, document.getElementById('root'));
 registerServiceWorker();

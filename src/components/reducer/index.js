@@ -12,8 +12,17 @@ const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
 const TOGGLE_VIEW = 'TOGGLE_VIEW';
 const SEARCH_ITEM = 'SEARCH_ITEM';
 const USER_INPUT = 'USER_INPUT';
+const ITEM_DETAILS = 'ITEM_DETAILS';
 
 // ACTIONS
+
+export function itemDetails(id){
+    return {
+        type: ITEM_DETAILS,
+        payload: axios.get(`/api/item/${id}`)
+    }
+}
+
 export function userInput(val) {
     return {
         type: USER_INPUT,
