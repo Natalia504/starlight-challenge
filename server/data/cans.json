@@ -124,8 +124,8 @@
       "waypointType": null,
       "waypointName": null,
       "location": {
-          "lon": -104.99,
-          "lat": 39.75
+          "lon": -104.99374239999997,
+          "lat": 39.7476339
       },
       "createdBy": "email@starlightpro.com",
       "createdDate": "2017-09-27T16:57:40.959Z",
