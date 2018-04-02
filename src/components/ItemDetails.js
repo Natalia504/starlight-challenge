@@ -1,22 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { itemDetails } from '../reducer';
+import { itemDetails, setCoordinates } from '../reducer';
 import parseDate from './../utils';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import apiKey from '../config';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+
+// have to use two libraries: google-maps-react & react-places-autocomplete;
+// the original data have inaccurate coordinates;
+// so, have to look up the correct coordinates by the address with react-places-autocomplete and then feed it to the google-maps-react to get a map. 
+
 
 class ItemDetails extends Component {
 
     componentDidMount() {
-        this.props.itemDetails(this.props.match.params.id);
+        this.props.itemDetails(this.props.match.params.id)
+        .then(() => geocodeByAddress(this.props.address)
+            .then(results => {
+                console.log('1', results)
+                return getLatLng(results[0])
+            })
+            .then(results => { console.log('2', results)
+                this.props.setCoordinates(results)
+            })
+            .catch(error => console.error('Error', error))
+        )
     }
-    onMarkerClick(){
-        return this.props.item.map(e => e.location.name)
-    }
+
 
     render() {
         console.log(this.props.item, this.props.lat, this.props.lng)
+        console.log(this.props.latLng, 'LatLNG')
+        const inputProps = {
+            value: this.props.address,
+            onChange: this.onChange
+        }
+        console.log(inputProps, 'props')
+
         const oneItem = this.props.item.map((e, i) => {
             return <div key={e.id} className=''>
                 <div className='row'>Name: {e.name}</div>
@@ -28,11 +49,7 @@ class ItemDetails extends Component {
                 <div className='row'>Modified On: {parseDate(e.modifiedDate)}</div>
             </div>
         })
-        const address = this.props.item.map((e, i) => {
-            return <div key={e.id} className=''>
-                <div className='row'>Address: {e.location.name}</div>
-                </div>
-                })
+       
         return (
             <div className='found'>
                 <Link to="/"><button>Back</button></Link>
@@ -40,28 +57,29 @@ class ItemDetails extends Component {
                 <div className='data'>{oneItem}</div>
 
                 <div className='map'>
-                    {this.props.lat && this.props.lng ?
+                    {Object.keys(this.props.latLng).length !== 0 ?
                         <Map
                             style={{
-                                width: '80%', height: '80%', margin: 'auto', border: '1px solid grey', position: 'relative'
+                                width: '80%',
+                                height: '80%',
+                                margin: 'auto',
+                                border: '1px solid grey',
+                                position: 'relative'
                             }}
                             google={this.props.google}
                             zoom={16}
-                            initialCenter={{
-                                lat: this.props.lat,
-                                lng: this.props.lng
-                            }}
+                            initialCenter={ this.props.latLng }
                         >
                             <Marker
                                 onClick={this.onMarkerClick}
-                                name={address} />
+                                name={'location'} />
                             <InfoWindow>
                                 <div>
                                     <h1>Selected Place</h1>
                                 </div>
                             </InfoWindow>
                         </Map>
-                        : 'Map is not found'
+                        : <div>Map is not available!</div>
                     }
                 </div>
             </div>
@@ -73,8 +91,10 @@ const mapStateToProps = state => {
     return {
         item: state.item,
         lat: state.lat,
-        lng: state.lng
+        lng: state.lng,
+        latLng: state.latLng,
+        address: state.address
     }
 }
 
-export default connect(mapStateToProps, { itemDetails })(GoogleApiWrapper({ apiKey: apiKey.key })(ItemDetails));
+export default connect(mapStateToProps, { itemDetails, setCoordinates })(GoogleApiWrapper({ apiKey: apiKey.key })(ItemDetails));

@@ -9,6 +9,8 @@ const initialState = {
     item: [],
     lat: null,
     lng: null,
+    latLng: {},
+    address: '',
     hideFound: true
 }
 
@@ -18,9 +20,15 @@ const SEARCH_ITEM = 'SEARCH_ITEM';
 const USER_INPUT = 'USER_INPUT';
 const ITEM_DETAILS = 'ITEM_DETAILS';
 const TOGGLE_FOUND = 'TOGGLE_FOUND';
+const SET_COORDINATES = 'SET_COORDINATES';
 
 // ACTIONS
-
+export function setCoordinates(results){
+    return {
+        type: SET_COORDINATES,
+        payload: results
+    }
+}
 export function itemDetails(id) {
 
     return {
@@ -89,7 +97,12 @@ export default function reducer(state = initialState, action) {
             return Object.assign({}, state, { 
                 item: action.payload.data, 
                 lat: action.payload.data[0].location.location.lat, 
-                lng: action.payload.data[0].location.location.lon })
+                lng: action.payload.data[0].location.location.lon,
+                address: action.payload.data[0].location.name
+            })
+
+        case SET_COORDINATES:
+        return Object.assign({}, state, {latLng: action.payload})
 
         default:
             return state;
